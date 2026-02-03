@@ -68,8 +68,13 @@ subprojects {
   // Source encoding = UTF-8.
   compileJava.options.encoding = 'UTF-8'
 
+  repositories {
+    flatDir { dirs rootProject.file("tools") }
+  }
+
   dependencies {
-    jastadd2 "org.jastadd:jastadd:2.3.5"
+    // jastadd2 "org.jastadd:jastadd:2.3.5"
+    jastadd2 name: "jastadd2"
   }
 
   application {
