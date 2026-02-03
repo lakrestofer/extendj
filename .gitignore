@@ -33,3 +33,5 @@
 /update-version.sh
 
 /NOTES
+.direnv
+.devenv
