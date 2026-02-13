@@ -87,6 +87,14 @@ subprojects {
     destinationDirectory = projectDir
   }
 
+  task 'bench-jar'(type: Jar, dependsOn: classes) {
+    description 'Build a jar with JavaBenchTest as the main entry point.'
+    archiveFileName = 'extendj-bench.jar'
+    manifest.attributes 'Main-Class': 'org.extendj.JavaBenchTest'
+    destinationDirectory = projectDir
+    from sourceSets.main.output
+  }
+
 
   // Copy version info from parent project.
   group = rootProject.group
