@@ -42,6 +42,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.lang.Thread;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 
 
 /**
@@ -66,26 +68,27 @@ public class JavaBenchTest extends Frontend {
     long startTime = 0;
     long totalTime = 0;
     String[] newargs = Arrays.copyOfRange(args, 1, args.length);
+    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(System.out));
 
+    try{
+      for(int i = 0; i<numIterations;i++){
+        startTime = System.nanoTime();
+        int exitCode = new JavaCompiler().run(newargs);
+        // try {
+        //   Thread.sleep(1000);
+        // } catch (InterruptedException e) {
+        // }
 
-    for(int i = 0; i<numIterations;i++){
-      startTime = System.nanoTime();
-      int exitCode = new JavaCompiler().run(newargs);
-      // try {
-      //   Thread.sleep(1000);
-      // } catch (InterruptedException e) {
-      // }
+        totalTime = System.nanoTime() - startTime;
+        if (exitCode != 0) {
+          System.exit(exitCode);
+        }
 
-      totalTime = System.nanoTime() - startTime;
-      if (exitCode != 0) {
-        System.exit(exitCode);
+        // TODO replace this with buffered approach
+        out.write(String.format("%.6f\n", totalTime / 1_000_000_000.0));
       }
-
-      // TODO replace this with buffered approach
-      System.out.println(
-          String.format("Analysis: %.6f", totalTime / 1_000_000_000.0));
-
-    }
+      out.flush();
+    } catch(Exception e) {}
   }
 
   private Mode mode = Mode.COMPILE;
