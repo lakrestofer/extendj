@@ -88,7 +88,7 @@ public class JavaBenchTest extends Frontend {
         out.write(String.format("%.6f\n", totalTime / 1_000_000_000.0));
       }
       out.flush();
-    } catch(Exception e) {}
+    } catch(IOException e) {}
   }
 
   private Mode mode = Mode.COMPILE;
