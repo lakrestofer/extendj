@@ -112,6 +112,8 @@ subprojects {
     parser.genDir = 'src/gen/org/extendj/parser'
     scanner.genDir = 'src/gen/org/extendj/scanner'
 
+    // extraJastAddOptions += "--tracing=all"
+
     if (rootProject.hasProperty('extraJastAddOptions')) {
       extraJastAddOptions += rootProject.extraJastAddOptions.split(',') as List
       print("options: ${extraJastAddOptions}")
