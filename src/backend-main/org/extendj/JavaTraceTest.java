@@ -41,10 +41,16 @@ import org.extendj.ast.Program;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import org.extendj.ast.ASTNode;
+import org.extendj.ast.ASTState;
+
+// import org.extendj.
+
 /**
  * Compile Java programs.
  */
 public class JavaCompiler extends Frontend {
+  public static final SimpleTracer TRACER = new SimpleTracer();
 
   protected enum Mode {
     COMPILE,
@@ -59,7 +65,13 @@ public class JavaCompiler extends Frontend {
    * @param args command-line arguments
    */
   public static void main(String args[]) {
-    int exitCode = new JavaCompiler().run(args);
+    JavaCompiler compiler = new JavaCompiler();
+
+    compiler.program.trace().setReceiver(TRACER);
+
+    int exitCode = compiler.run(args);
+
+    TRACER.generateReport(System.out);
     if (exitCode != 0) {
       System.exit(exitCode);
     }
