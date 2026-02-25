@@ -95,10 +95,23 @@ subprojects {
     from sourceSets.main.output
   }
 
+  task 'trace-jar' (type: Jar, dependsOn: classes) {
+    description 'Build a jar with JavaTraceTest as the main entry point.'
+    archiveFileName = 'extendj-trace.jar'
+    manifest.attributes 'Main-Class': 'org.extendj.JavaTraceTest'
+    destinationDirectory = projectDir
+    from sourceSets.main.output
+    // extraJastAddOptions=--tracing=all
+  }
+
 
   // Copy version info from parent project.
   group = rootProject.group
   version = rootProject.version
+
+  if(gradle.startParameter.taskNames.any { it.contains('trace-jar') }) {
+    project.ext.enableTracing = true
+  }
 
   jastadd {
     configureModuleBuild()
@@ -112,7 +125,9 @@ subprojects {
     parser.genDir = 'src/gen/org/extendj/parser'
     scanner.genDir = 'src/gen/org/extendj/scanner'
 
-    // extraJastAddOptions += "--tracing=all"
+    if(rootProject.hasProperty('enableTracing') || project.hasProperty('enableTracing')) {
+      extraJastAddOptions += "--tracing=all"
+    }
 
     if (rootProject.hasProperty('extraJastAddOptions')) {
       extraJastAddOptions += rootProject.extraJastAddOptions.split(',') as List
@@ -151,6 +166,10 @@ subprojects {
       srcDir rootProject.file('src/backend-main')
       srcDir rootProject.file('src/frontend-main')
       srcDir 'src/gen'
+      if(!rootProject.hasProperty('enableTracing') && !project.hasProperty('enableTracing')) {
+        exclude 'org/extendj/JavaTraceTest.java'
+        exclude 'org/extendj/SimpleTracer.java'
+      }
     }
     main.resources {
       srcDir 'src/gen-res' // JastAdd buildInfo directory.

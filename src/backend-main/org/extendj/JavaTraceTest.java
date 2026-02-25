@@ -41,15 +41,13 @@ import org.extendj.ast.Program;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.extendj.ast.ASTNode;
-import org.extendj.ast.ASTState;
-
-// import org.extendj.
+// import org.extendj.ast.ASTNode;
+// import org.extendj.ast.ASTState;
 
 /**
  * Compile Java programs.
  */
-public class JavaCompiler extends Frontend {
+public class JavaTraceTest extends Frontend {
   public static final SimpleTracer TRACER = new SimpleTracer();
 
   protected enum Mode {
@@ -65,7 +63,7 @@ public class JavaCompiler extends Frontend {
    * @param args command-line arguments
    */
   public static void main(String args[]) {
-    JavaCompiler compiler = new JavaCompiler();
+    JavaTraceTest compiler = new JavaTraceTest();
 
     compiler.program.trace().setReceiver(TRACER);
 
@@ -78,7 +76,7 @@ public class JavaCompiler extends Frontend {
   }
 
   public static Object CodeProber_parse(String[] args) {
-    new JavaCompiler().run(args);
+    new JavaTraceTest().run(args);
     return Frontend.DrAST_root_node;
   }
 
@@ -87,7 +85,7 @@ public class JavaCompiler extends Frontend {
   /**
    * Initialize the compiler.
    */
-  public JavaCompiler() {
+  public JavaTraceTest() {
     this("ExtendJ");
   }
 
@@ -95,7 +93,7 @@ public class JavaCompiler extends Frontend {
    * Initialize the compiler.
    * @param toolName the name of the compiler
    */
-  protected JavaCompiler(String toolName) {
+  protected JavaTraceTest(String toolName) {
     super(toolName, ExtendJVersion.getVersion());
   }
 
@@ -106,7 +104,7 @@ public class JavaCompiler extends Frontend {
    */
   @Deprecated
   public static boolean compile(String args[]) {
-    return EXIT_SUCCESS == new JavaCompiler().run(args);
+    return EXIT_SUCCESS == new JavaTraceTest().run(args);
   }
 
   /**
