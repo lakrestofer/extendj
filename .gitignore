@@ -41,3 +41,5 @@
 .devenv
 **/extendj-bench.jar
 **/extendj-trace.jar
+
+log.csv

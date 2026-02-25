@@ -169,6 +169,7 @@ subprojects {
       if(!rootProject.hasProperty('enableTracing') && !project.hasProperty('enableTracing')) {
         exclude 'org/extendj/JavaTraceTest.java'
         exclude 'org/extendj/SimpleTracer.java'
+        exclude 'org/extendj/LoggingTracer.java'
       }
     }
     main.resources {

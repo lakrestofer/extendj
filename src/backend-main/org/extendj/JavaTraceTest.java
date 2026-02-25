@@ -32,6 +32,8 @@ package org.extendj;
 
 import java.io.File;
 import java.util.Collection;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import org.extendj.ast.CompilationUnit;
 import org.extendj.ast.Frontend;
@@ -42,13 +44,12 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 // import org.extendj.ast.ASTNode;
-// import org.extendj.ast.ASTState;
+import org.extendj.ast.ASTState;
 
 /**
  * Compile Java programs.
  */
 public class JavaTraceTest extends Frontend {
-  public static final SimpleTracer TRACER = new SimpleTracer();
 
   protected enum Mode {
     COMPILE,
@@ -62,14 +63,18 @@ public class JavaTraceTest extends Frontend {
    * Entry point for the compiler frontend.
    * @param args command-line arguments
    */
-  public static void main(String args[]) {
+  public static void main(String args[]) throws IOException {
+    BufferedWriter out = new BufferedWriter(new FileWriter("log.csv", false));
+    ASTState.Trace.Receiver tracer = new LoggingTracer(out);
     JavaTraceTest compiler = new JavaTraceTest();
 
-    compiler.program.trace().setReceiver(TRACER);
+    compiler.program.trace().setReceiver(tracer);
 
     int exitCode = compiler.run(args);
+    out.flush();
+    out.close();
 
-    TRACER.generateReport(System.out);
+    // tracer.generateReport(System.out);
     if (exitCode != 0) {
       System.exit(exitCode);
     }
