@@ -43,6 +43,9 @@ import org.extendj.ast.Program;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 // import org.extendj.ast.ASTNode;
 import org.extendj.ast.ASTState;
 
@@ -64,7 +67,9 @@ public class JavaTraceTest extends Frontend {
    * @param args command-line arguments
    */
   public static void main(String args[]) throws IOException {
-    BufferedWriter out = new BufferedWriter(new FileWriter("log.csv", false));
+    ZonedDateTime now = ZonedDateTime.now();
+    String fileName = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-kk-mm"));
+    BufferedWriter out = new BufferedWriter(new FileWriter(String.format("trace-log-%s.csv", fileName ), false));
     ASTState.Trace.Receiver tracer = new LoggingTracer(out);
     JavaTraceTest compiler = new JavaTraceTest();
 
