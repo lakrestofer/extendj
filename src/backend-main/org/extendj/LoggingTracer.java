@@ -21,12 +21,18 @@ public class LoggingTracer implements ASTState.Trace.Receiver {
         this.startTime = System.nanoTime();
     }
 
+
     public void accept(ASTState.Trace.Event event, ASTNode node, String attribute, Object params, Object value) {
+        accept(event, "", node, attribute, params, value);
+    }
+
+    public void accept(ASTState.Trace.Event event, String aspect, ASTNode node, String attribute, Object params, Object value) {
         try {
-            String eventName = event.toString();
-            String astNodeName = ASTNode.nodeToString(node);
+            long timestamp = System.nanoTime() - startTime;
             int astNodeId = System.identityHashCode(node);
-            out.write(String.format("%d\t%s\t%s\t%d\n", astNodeId, eventName, astNodeName, System.nanoTime() - startTime));
+            String astNodeName = ASTNode.nodeToString(node);
+            String eventName = event.toString();
+            out.write(String.format("%d\t%s\t%d\t%s\t%s\t%s\n", timestamp, aspect, astNodeId,  astNodeName , attribute, eventName));
         } catch(IOException e) {
             // e.printStackTrace();
             System.err.println("uh oh");
