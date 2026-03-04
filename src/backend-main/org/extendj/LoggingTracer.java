@@ -23,16 +23,17 @@ public class LoggingTracer implements ASTState.Trace.Receiver {
 
 
     public void accept(ASTState.Trace.Event event, ASTNode node, String attribute, Object params, Object value) {
-        accept(event, "", node, attribute, params, value);
+        accept(event, "UnknownAspect", node, attribute, params, value);
     }
 
     public void accept(ASTState.Trace.Event event, String aspect, ASTNode node, String attribute, Object params, Object value) {
         try {
+            String aspect_checked = aspect.isEmpty() ? "UnknownAspect" : aspect;
             long timestamp = System.nanoTime() - startTime;
             int astNodeId = System.identityHashCode(node);
             String astNodeName = ASTNode.nodeToString(node);
             String eventName = event.toString();
-            out.write(String.format("%d\t%s\t%d\t%s\t%s\t%s\n", timestamp, aspect, astNodeId,  astNodeName , attribute, eventName));
+            out.write(String.format("%d\t%s\t%d\t%s\t%s\t%s\n", timestamp, aspect_checked, astNodeId,  astNodeName , attribute, eventName));
         } catch(IOException e) {
             // e.printStackTrace();
             System.err.println("uh oh");
